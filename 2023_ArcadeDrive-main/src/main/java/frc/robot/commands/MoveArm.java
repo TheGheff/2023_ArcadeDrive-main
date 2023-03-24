@@ -12,7 +12,8 @@ import frc.robot.subsystems.ArmSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class MoveArm extends InstantCommand {
   public MoveArm(double Speed, ArmSubsystem arm) {
-    // Use addRequirements() here to declare subsystem dependencies.
+    arm.armUp(Speed);
+
 
     
   }

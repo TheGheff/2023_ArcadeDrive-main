@@ -34,6 +34,14 @@ public class ArmSubsystem extends SubsystemBase {
 
   }
 
+  public void armUp(double speed) {
+    m_Arm.set(.3);;
+  }
+
+  public void armDown(double speed) {
+    m_Arm.set(-.3);;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
