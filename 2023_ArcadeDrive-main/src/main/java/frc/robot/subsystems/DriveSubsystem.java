@@ -54,13 +54,13 @@ public class DriveSubsystem extends SubsystemBase {
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
-  // The left-side drive encoder
+  // The left-side Primary drive encoder
   private  RelativeEncoder m_leftEncoderP = m_LeftPrimary.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-  // The right-side drive encoder
+  // The right-side Primary drive encoder
   private  RelativeEncoder m_rightEncoderP = m_RightPrimary.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
- // The left-side drive encoder
+ // The left-side Secondary drive encoder
  private  RelativeEncoder m_leftEncoderS = m_LeftSecondary.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
- // The right-side drive encoder
+ // The right-side Secondary drive encoder
  private  RelativeEncoder m_rightEncoderS = m_RightSecondary.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
 
@@ -102,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return 0;//(m_leftEncoder.getDistance());// + m_rightEncoder.getDistance()) / 2.0;
+    return ((m_leftEncoderP.getPosition()*DriveConstants.kGeaeboxRatio) + (m_rightEncoderP.getPosition()*DriveConstants.kGeaeboxRatio)) / 2.0;
   }
 
   /**

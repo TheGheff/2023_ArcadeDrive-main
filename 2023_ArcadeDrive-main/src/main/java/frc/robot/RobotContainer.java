@@ -13,6 +13,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.TurnToAngleProfiled;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
@@ -28,10 +29,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final   ArmSubsystem m_Arm = new ArmSubsystem();
 
   // The driver's controller
   PS4Controller m_driverController = new PS4Controller(OIConstants.kDriverControllerPort);
-
+  PS4Controller m_operatorController = m_driverController;//new PS4Controller(OIConstants.kDriverControllerPort);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -58,7 +60,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Drive at half speed when the right bumper is held
     new JoystickButton(m_driverController, Button.kR1.value)
-        .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.5)))
+        .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.25)))
         .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(1)));
 
     // Stabilize robot to drive straight with gyro when left bumper is held
@@ -74,7 +76,7 @@ public class RobotContainer {
                 // Setpoint is 0
                 0,
                 // Pipe the output to the turning controls
-                output -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(), output),
+                output -> m_robotDrive.arcadeDrive(.3, output),
                 // Require the robot drive
                 m_robotDrive));
 

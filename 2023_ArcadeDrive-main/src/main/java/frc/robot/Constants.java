@@ -24,11 +24,13 @@ public final class Constants {
     public static final boolean kLeftEncoderReversed = false;
     public static final boolean kRightEncoderReversed = true;
 
-    public static final int kEncoderCPR = 1024;
+    public static final int kEncoderCPR = 42;
     public static final double kWheelDiameterInches = 6;
+    public static final double kGeaeboxRatio = 12.75;
     public static final double kEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
-        (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
+        //(kWheelDiameterInches * Math.PI) / (double) kEncoderCPR; // Original math
+        (kWheelDiameterInches * Math.PI) / ((double) kEncoderCPR*kGeaeboxRatio); // math for toughbox mini
 
     public static final boolean kGyroReversed = false;
 
@@ -49,5 +51,14 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 0;
   }
+
+
+  public static final class ArmConstants {
+    public static final int kArmMotorPort = 5;
+    public static final int kGrabberMotorPort = 6;  
+  }
+
+
 }
