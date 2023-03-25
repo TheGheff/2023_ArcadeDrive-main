@@ -2,7 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
+
 package frc.robot.subsystems;
+
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -29,18 +32,23 @@ public class ArmSubsystem extends SubsystemBase {
     private  RelativeEncoder m_GrabberEncoderP = m_Grabber.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
   public ArmSubsystem() {
-
-
-
+    m_ArmEncoderP.setPosition(0);
   }
 
-  public void armUp(double speed) {
-    m_Arm.set(.3);;
+  public void setSpeed(double speed) {
+    m_Arm.set(speed);
   }
 
-  public void armDown(double speed) {
-    m_Arm.set(-.3);;
+
+  public void grabberClose(double speed) {
+    m_Grabber.set(speed);
   }
+
+  public void grabberOpen(double speed) {
+    m_Grabber.set(speed);
+  }
+
+
 
   @Override
   public void periodic() {

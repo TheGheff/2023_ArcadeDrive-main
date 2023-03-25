@@ -4,16 +4,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.ArmSubsystem;
-
+/*
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class MoveArm extends InstantCommand {
+public class MoveArm extends RunCommand {
+  
   public MoveArm(double Speed, ArmSubsystem arm) {
-    arm.armUp(Speed);
-
+    
+    arm.setSpeed(Speed);
+    
 
     
   }
@@ -22,3 +24,6 @@ public class MoveArm extends InstantCommand {
   @Override
   public void initialize() {}
 }
+
+
+*/
