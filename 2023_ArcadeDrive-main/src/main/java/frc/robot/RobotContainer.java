@@ -92,14 +92,14 @@ public class RobotContainer {
                 // Require the robot drive
                 m_robotDrive));
 
- /*   // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
+    // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
     new JoystickButton(m_driverController, Button.kA.value)
         .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(1));
 
     // Turn to -90 degrees with a profile when the Circle button is pressed, with a 5 second timeout
     new JoystickButton(m_driverController, Button.kB.value)
         .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(1));
-*/
+
 
 // Move arm up
     new JoystickButton(m_operatorController, Button.kY.value)
@@ -113,7 +113,6 @@ public class RobotContainer {
 
     //this is a BAD hack #fix
     new JoystickButton(m_operatorController, Button.kA.value) 
-   .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.125)))//.25
    .onTrue (new RunCommand(() ->m_Arm.setSpeed(m_operatorController.getRightY()),
                 m_Arm) );
 

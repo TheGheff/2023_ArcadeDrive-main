@@ -35,9 +35,14 @@ public class ArmSubsystem extends SubsystemBase {
     m_ArmEncoderP.setPosition(0);
   }
 
+  public double getPosition() {
+    return m_ArmEncoderP.getPosition();
+  }
+
   public void setSpeed(double speed) {
     m_Arm.set(speed);
   }
+
 
 
   public void grabberClose(double speed) {
