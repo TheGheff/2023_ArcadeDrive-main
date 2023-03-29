@@ -4,20 +4,29 @@
 
 package frc.robot;
 
-import static edu.wpi.first.wpilibj.PS4Controller.Button;
+//import static edu.wpi.first.wpilibj.PS4Controller.Button;
+import static edu.wpi.first.wpilibj.XboxController.Button;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.PS4Controller;
+//import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.TurnToAngleProfiled;
+import frc.robot.commands.MoveArm;
+
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,10 +37,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final   ArmSubsystem m_Arm = new ArmSubsystem();
 
   // The driver's controller
-  PS4Controller m_driverController = new PS4Controller(OIConstants.kDriverControllerPort);
-
+  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -45,9 +55,13 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.arcadeDrive(
-                    -m_driverController.getLeftY(), -m_driverController.getRightX()),
+                    -m_driverController.getLeftY(), -m_driverController.getRightX()), 
             m_robotDrive));
-  }
+
+
+
+
+  };
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -57,35 +71,73 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Drive at half speed when the right bumper is held
-    new JoystickButton(m_driverController, Button.kR1.value)
-        .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.5)))
-        .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(1)));
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+        .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.125)))//.25
+        .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.25)));  //1
 
+// Move arm up
+    new JoystickButton(m_operatorController, Button.kY.value)
+    .onTrue( new InstantCommand(() ->m_Arm.grabberOpen(.5)))
+    .onFalse( new InstantCommand(() ->m_Arm.grabberOpen(0)));
+//move arm down
+    new JoystickButton(m_operatorController, Button.kX.value) 
+    .onTrue( new InstantCommand(() ->m_Arm.grabberClose(-.5)))
+    .onFalse( new InstantCommand(() ->m_Arm.grabberClose(0)));
+        
+
+    //this is a BAD hack #fix
+    new JoystickButton(m_operatorController, Button.kA.value) 
+   .onTrue (new RunCommand(() -> m_Arm.setSpeed(m_operatorController.getLeftY()),
+                m_Arm) );
+
+
+//*********Closed Loop*********UNTESTED
+         
+
+/*
     // Stabilize robot to drive straight with gyro when left bumper is held
-    new JoystickButton(m_driverController, Button.kL1.value)
-        .whileTrue(
-            new PIDCommand(
-                new PIDController(
-                    DriveConstants.kStabilizationP,
-                    DriveConstants.kStabilizationI,
-                    DriveConstants.kStabilizationD),
-                // Close the loop on the turn rate
-                m_robotDrive::getTurnRate,
-                // Setpoint is 0
-                0,
-                // Pipe the output to the turning controls
-                output -> m_robotDrive.arcadeDrive(-m_driverController.getLeftY(), output),
-                // Require the robot drive
-                m_robotDrive));
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    .whileTrue(
+        new PIDCommand(
+            new PIDController(
+                DriveConstants.kStabilizationP,
+                DriveConstants.kStabilizationI,
+                DriveConstants.kStabilizationD),
+            // Close the loop on the turn rate
+            m_robotDrive::getTurnRate,
+            // Setpoint is 0
+            0,
+            // Pipe the output to the turning controls
+            output -> m_robotDrive.arcadeDrive(.3, output),
+            // Require the robot drive
+            m_robotDrive));
 
     // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
-    new JoystickButton(m_driverController, Button.kCross.value)
-        .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(5));
+    new JoystickButton(m_driverController, Button.kA.value)
+        .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(1));
 
     // Turn to -90 degrees with a profile when the Circle button is pressed, with a 5 second timeout
-    new JoystickButton(m_driverController, Button.kCircle.value)
-        .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(5));
-  }
+    new JoystickButton(m_driverController, Button.kB.value)
+        .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(1));
+
+
+    // Move arm up
+    new JoystickButton(m_operatorController, Button.kB.value)
+        .onTrue( new MoveArm(0,m_Arm));//.withTimeout(1));
+
+    
+
+        
+    new JoystickButton(m_operatorController, Button.kRightBumper.value)
+        .onTrue( new MoveArm(-150,m_Arm));//.withTimeout(1));
+
+     // Move arm up
+     new JoystickButton(m_operatorController, Button.kLeftBumper.value)
+     .onTrue( new MoveArm(-200,m_Arm));//.withTimeout(1));
+*/
+     
+
+    }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -94,6 +146,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // no auto
+    m_Arm.setHomPosition();
+    
     return new InstantCommand();
   }
 }

@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
@@ -54,18 +57,18 @@ public class DriveSubsystem extends SubsystemBase {
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
-  // The left-side drive encoder
+  // The left-side Primary drive encoder
   private  RelativeEncoder m_leftEncoderP = m_LeftPrimary.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-  // The right-side drive encoder
+  // The right-side Primary drive encoder
   private  RelativeEncoder m_rightEncoderP = m_RightPrimary.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
- // The left-side drive encoder
+ // The left-side Secondary drive encoder
  private  RelativeEncoder m_leftEncoderS = m_LeftSecondary.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
- // The right-side drive encoder
+ // The right-side Secondary drive encoder
  private  RelativeEncoder m_rightEncoderS = m_RightSecondary.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
 
   // The gyro sensor
-  private final Gyro m_gyro = new ADXRS450_Gyro();
+  AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -102,7 +105,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return 0;//(m_leftEncoder.getDistance());// + m_rightEncoder.getDistance()) / 2.0;
+    return ((m_leftEncoderP.getPosition()*DriveConstants.kGeaeboxRatio) + (m_rightEncoderP.getPosition()*DriveConstants.kGeaeboxRatio)) / 2.0;
   }
 
   /**
@@ -134,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
-    m_gyro.reset();
+    ahrs.reset();
   }
 
   /**
@@ -143,7 +146,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from 180 to 180
    */
   public double getHeading() {
-    return Math.IEEEremainder(m_gyro.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return Math.IEEEremainder(ahrs.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
   /**
@@ -152,6 +155,6 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return ahrs.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
 }
