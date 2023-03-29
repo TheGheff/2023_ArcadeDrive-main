@@ -103,17 +103,17 @@ public class RobotContainer {
 
 // Move arm up
     new JoystickButton(m_operatorController, Button.kY.value)
-    .onTrue( new InstantCommand(() ->m_Arm.setSpeed(.3)))
-    .onFalse( new InstantCommand(() ->m_Arm.setSpeed(0)));
+    .onTrue( new InstantCommand(() ->m_Arm.grabberOpen(.5)))
+    .onFalse( new InstantCommand(() ->m_Arm.grabberOpen(0)));
 //move arm down
     new JoystickButton(m_operatorController, Button.kX.value) 
-    .onTrue( new InstantCommand(() ->m_Arm.setSpeed(-.3)))
-    .onFalse( new InstantCommand(() ->m_Arm.setSpeed(0)));
+    .onTrue( new InstantCommand(() ->m_Arm.grabberClose(-.5)))
+    .onFalse( new InstantCommand(() ->m_Arm.grabberClose(0)));
         
 
     //this is a BAD hack #fix
     new JoystickButton(m_operatorController, Button.kA.value) 
-   .onTrue (new RunCommand(() ->m_Arm.setSpeed(m_operatorController.getRightY()),
+   .onTrue (new RunCommand(() ->m_Arm.setSpeed(m_operatorController.getLeftY()),
                 m_Arm) );
 
 
