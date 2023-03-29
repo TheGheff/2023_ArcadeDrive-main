@@ -32,11 +32,15 @@ public class ArmSubsystem extends SubsystemBase {
     private  RelativeEncoder m_GrabberEncoderP = m_Grabber.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
   public ArmSubsystem() {
-    m_ArmEncoderP.setPosition(0);
+    
   }
 
   public double getPosition() {
     return m_ArmEncoderP.getPosition();
+  }
+
+  public void setHomPosition() {
+    m_ArmEncoderP.setPosition(0);
   }
 
   public void setSpeed(double speed) {
