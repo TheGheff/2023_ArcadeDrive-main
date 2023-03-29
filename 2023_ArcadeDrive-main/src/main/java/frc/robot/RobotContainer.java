@@ -26,8 +26,6 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -61,7 +59,9 @@ public class RobotContainer {
 
 
 
-  };
+  }
+
+;
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -75,6 +75,32 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.125)))//.25
         .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.25)));  //1
 
+    // Stabilize robot to drive straight with gyro when left bumper is held
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+        .whileTrue(
+            new PIDCommand(
+                new PIDController(
+                    DriveConstants.kStabilizationP,
+                    DriveConstants.kStabilizationI,
+                    DriveConstants.kStabilizationD),
+                // Close the loop on the turn rate
+                m_robotDrive::getTurnRate,
+                // Setpoint is 0
+                0,
+                // Pipe the output to the turning controls
+                output -> m_robotDrive.arcadeDrive(.3, output),
+                // Require the robot drive
+                m_robotDrive));
+
+    // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
+    new JoystickButton(m_driverController, Button.kA.value)
+        .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(1));
+
+    // Turn to -90 degrees with a profile when the Circle button is pressed, with a 5 second timeout
+    new JoystickButton(m_driverController, Button.kB.value)
+        .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(1));
+
+
 // Move arm up
     new JoystickButton(m_operatorController, Button.kY.value)
     .onTrue( new InstantCommand(() ->m_Arm.grabberOpen(.5)))
@@ -87,14 +113,14 @@ public class RobotContainer {
 
     //this is a BAD hack #fix
     new JoystickButton(m_operatorController, Button.kA.value) 
-   .onTrue (new RunCommand(() -> m_Arm.setSpeed(m_operatorController.getLeftY()),
+   .onTrue (new RunCommand(() ->m_Arm.setSpeed(m_operatorController.getLeftY()),
                 m_Arm) );
 
 
 //*********Closed Loop*********UNTESTED
          
 
-/*
+
     // Stabilize robot to drive straight with gyro when left bumper is held
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(
@@ -121,11 +147,8 @@ public class RobotContainer {
         .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(1));
 
 
-    // Move arm up
-    new JoystickButton(m_operatorController, Button.kB.value)
-        .onTrue( new MoveArm(0,m_Arm));//.withTimeout(1));
+  
 
-    
 
         
     new JoystickButton(m_operatorController, Button.kRightBumper.value)
@@ -134,7 +157,7 @@ public class RobotContainer {
      // Move arm up
      new JoystickButton(m_operatorController, Button.kLeftBumper.value)
      .onTrue( new MoveArm(-200,m_Arm));//.withTimeout(1));
-*/
+
      
 
     }
@@ -146,8 +169,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // no auto
-    m_Arm.setHomPosition();
-    
     return new InstantCommand();
   }
 }

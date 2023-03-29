@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.Constants.ArmConstants;
 
-
-
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
@@ -34,7 +32,7 @@ public class MoveArm extends PIDCommand {
         arm);
 
     // Set the controller to be continuous (because it is an rotation count controller)
-    getController().enableContinuousInput(-200, 0); // # tick, 
+    getController().enableContinuousInput(-5250, 5250); // # tick, 42 per  rotations 125 rotations in each direction
     // Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
     // setpoint before it is considered as having reached the reference
     getController()
@@ -46,8 +44,6 @@ public class MoveArm extends PIDCommand {
   @Override
   public boolean isFinished() {
     // End when the controller is at the reference.
-
-    
     return getController().atSetpoint();
   }
 }
