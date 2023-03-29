@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -92,7 +92,9 @@ public class RobotContainer {
 
 
 //*********Closed Loop*********UNTESTED
-                
+         
+
+/*
     // Stabilize robot to drive straight with gyro when left bumper is held
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(
@@ -132,7 +134,7 @@ public class RobotContainer {
      // Move arm up
      new JoystickButton(m_operatorController, Button.kLeftBumper.value)
      .onTrue( new MoveArm(-200,m_Arm));//.withTimeout(1));
-
+*/
      
 
     }

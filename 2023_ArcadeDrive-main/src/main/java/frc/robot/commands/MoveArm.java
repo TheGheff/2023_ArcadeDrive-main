@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.Constants.ArmConstants;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -39,7 +39,8 @@ public class MoveArm extends PIDCommand {
     // setpoint before it is considered as having reached the reference
     getController()
         .setTolerance(ArmConstants.kTurnToleranceDeg, ArmConstants.kTurnRateToleranceDegPerS);
-        SmartDashboard.putNumber("Position", arm.getPosition());
+    
+    
   }
 
   @Override
