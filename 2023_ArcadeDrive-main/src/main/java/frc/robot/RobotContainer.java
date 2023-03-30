@@ -60,8 +60,24 @@ public class RobotContainer {
 
 
 
+    m_Arm.setDefaultCommand(
+        new RunCommand(
+            () -> 
+                m_Arm.setSpeed(m_operatorController.getLeftY()),
+                m_Arm));
+
 
   };
+
+
+
+
+
+<<<<<<< Updated upstream
+  };
+=======
+
+>>>>>>> Stashed changes
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -70,25 +86,78 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    m_robotDrive.setMaxOutput(0.125); //totally inthe wrong place #fix
+
     // Drive at half speed when the right bumper is held
     new JoystickButton(m_driverController, Button.kRightBumper.value)
         .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.125)))//.25
         .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.25)));  //1
 
+<<<<<<< Updated upstream
 // Move arm up
+=======
+//Does not work        
+    // Stabilize robot to drive straight with gyro when left bumper is held
+/*    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+        .whileTrue(
+            new PIDCommand(
+                new PIDController(
+                    DriveConstants.kStabilizationP,
+                    DriveConstants.kStabilizationI,
+                    DriveConstants.kStabilizationD),
+                // Close the loop on the turn rate
+                m_robotDrive::getTurnRate,
+                // Setpoint is 0
+                0,
+                // Pipe the output to the turning controls
+                output -> m_robotDrive.arcadeDrive(.3, output),
+                // Require the robot drive
+                m_robotDrive));
+*/
+/*
+    // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
+    new JoystickButton(m_driverController, Button.kA.value)
+        .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(1));
+
+    // Turn to -90 degrees with a profile when the Circle button is pressed, with a 5 second timeout
+    new JoystickButton(m_driverController, Button.kB.value)
+        .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(1));
+*/
+
+ // Move arm up
+    new JoystickButton(m_operatorController, Button.kB.value)
+    .onTrue( new InstantCommand(() ->m_Arm.setSpeed(.5)))
+    .onFalse( new InstantCommand(() ->m_Arm.setSpeed(0)));
+//move arm down
+    new JoystickButton(m_operatorController, Button.kA.value) 
+    .onTrue( new InstantCommand(() ->m_Arm.setSpeed(-.5)))
+    .onFalse( new InstantCommand(() ->m_Arm.setSpeed(0)));
+
+
+ // Grabber Open
+>>>>>>> Stashed changes
     new JoystickButton(m_operatorController, Button.kY.value)
     .onTrue( new InstantCommand(() ->m_Arm.grabberOpen(.5)))
     .onFalse( new InstantCommand(() ->m_Arm.grabberOpen(0)));
-//move arm down
+
+
+ // Grabber Close
     new JoystickButton(m_operatorController, Button.kX.value) 
     .onTrue( new InstantCommand(() ->m_Arm.grabberClose(-.5)))
     .onFalse( new InstantCommand(() ->m_Arm.grabberClose(0)));
         
+        
 
     //this is a BAD hack #fix
+<<<<<<< Updated upstream
     new JoystickButton(m_operatorController, Button.kA.value) 
    .onTrue (new RunCommand(() -> m_Arm.setSpeed(m_operatorController.getLeftY()),
                 m_Arm) );
+=======
+//    new JoystickButton(m_operatorController, Button.kA.value) 
+ //  .onTrue (new RunCommand(() ->m_Arm.setSpeed(m_operatorController.getLeftY()),
+ //               m_Arm) );
+>>>>>>> Stashed changes
 
 
 //*********Closed Loop*********UNTESTED
@@ -108,17 +177,17 @@ public class RobotContainer {
             // Setpoint is 0
             0,
             // Pipe the output to the turning controls
-            output -> m_robotDrive.arcadeDrive(.3, output),
+            output -> m_robotDrive.arcadeDrive(.5, output),
             // Require the robot drive
             m_robotDrive));
 
     // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
     new JoystickButton(m_driverController, Button.kA.value)
-        .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(1));
+        .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(5));
 
     // Turn to -90 degrees with a profile when the Circle button is pressed, with a 5 second timeout
     new JoystickButton(m_driverController, Button.kB.value)
-        .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(1));
+        .onTrue(new TurnToAngle(-90, m_robotDrive).withTimeout(5));
 
 
     // Move arm up
@@ -146,8 +215,12 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // no auto
+<<<<<<< Updated upstream
     m_Arm.setHomPosition();
     
+=======
+
+>>>>>>> Stashed changes
     return new InstantCommand();
   }
 }
