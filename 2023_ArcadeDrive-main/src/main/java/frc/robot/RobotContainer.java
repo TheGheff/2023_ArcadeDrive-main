@@ -71,14 +71,6 @@ public class RobotContainer {
 
 
 
-
-
-<<<<<<< Updated upstream
-  };
-=======
-
->>>>>>> Stashed changes
-
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its subclasses ({@link
@@ -93,9 +85,6 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.125)))//.25
         .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.25)));  //1
 
-<<<<<<< Updated upstream
-// Move arm up
-=======
 //Does not work        
     // Stabilize robot to drive straight with gyro when left bumper is held
 /*    new JoystickButton(m_driverController, Button.kLeftBumper.value)
@@ -135,29 +124,22 @@ public class RobotContainer {
 
 
  // Grabber Open
->>>>>>> Stashed changes
-    new JoystickButton(m_operatorController, Button.kY.value)
-    .onTrue( new InstantCommand(() ->m_Arm.grabberOpen(.5)))
-    .onFalse( new InstantCommand(() ->m_Arm.grabberOpen(0)));
+    new JoystickButton(m_operatorController, Button.kX.value)
+    .onTrue( new InstantCommand(() ->m_Arm.grabberClose(.5)))
+    .onFalse( new InstantCommand(() ->m_Arm.grabberClose(0)));
 
 
  // Grabber Close
-    new JoystickButton(m_operatorController, Button.kX.value) 
-    .onTrue( new InstantCommand(() ->m_Arm.grabberClose(-.5)))
-    .onFalse( new InstantCommand(() ->m_Arm.grabberClose(0)));
+    new JoystickButton(m_operatorController, Button.kY.value) 
+    .onTrue( new InstantCommand(() ->m_Arm.grabberOpen(-.5)))
+    .onFalse( new InstantCommand(() ->m_Arm.grabberOpen(0)));
         
         
 
     //this is a BAD hack #fix
-<<<<<<< Updated upstream
-    new JoystickButton(m_operatorController, Button.kA.value) 
-   .onTrue (new RunCommand(() -> m_Arm.setSpeed(m_operatorController.getLeftY()),
-                m_Arm) );
-=======
 //    new JoystickButton(m_operatorController, Button.kA.value) 
  //  .onTrue (new RunCommand(() ->m_Arm.setSpeed(m_operatorController.getLeftY()),
  //               m_Arm) );
->>>>>>> Stashed changes
 
 
 //*********Closed Loop*********UNTESTED
@@ -181,6 +163,8 @@ public class RobotContainer {
             // Require the robot drive
             m_robotDrive));
 
+
+/*  //Does not work
     // Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
     new JoystickButton(m_driverController, Button.kA.value)
         .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(5));
@@ -190,11 +174,8 @@ public class RobotContainer {
         .onTrue(new TurnToAngle(-90, m_robotDrive).withTimeout(5));
 
 
-    // Move arm up
-    new JoystickButton(m_operatorController, Button.kB.value)
-        .onTrue( new MoveArm(0,m_Arm));//.withTimeout(1));
+  
 
-    
 
         
     new JoystickButton(m_operatorController, Button.kRightBumper.value)
@@ -215,12 +196,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // no auto
-<<<<<<< Updated upstream
-    m_Arm.setHomPosition();
-    
-=======
 
->>>>>>> Stashed changes
     return new InstantCommand();
   }
 }
