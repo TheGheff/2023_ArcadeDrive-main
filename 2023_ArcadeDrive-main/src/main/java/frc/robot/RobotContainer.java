@@ -16,6 +16,8 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.TurnToAngleProfiled;
 import frc.robot.commands.MoveArm;
+import frc.robot.commands.CloseGrabber;
+import frc.robot.commands.OpenGrabber;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
@@ -125,13 +127,13 @@ public class RobotContainer {
 
  // Grabber Open
     new JoystickButton(m_operatorController, Button.kX.value)
-    .onTrue( new InstantCommand(() ->m_Arm.grabberClose(.5)))
+    .onTrue( new CloseGrabber(m_Arm))//new InstantCommand(() ->m_Arm.grabberClose(-.5)))
     .onFalse( new InstantCommand(() ->m_Arm.grabberClose(0)));
 
 
  // Grabber Close
     new JoystickButton(m_operatorController, Button.kY.value) 
-    .onTrue( new InstantCommand(() ->m_Arm.grabberOpen(-.5)))
+    .onTrue( new OpenGrabber(m_Arm))//new InstantCommand(() ->m_Arm.grabberOpen(.5)))
     .onFalse( new InstantCommand(() ->m_Arm.grabberOpen(0)));
         
         
