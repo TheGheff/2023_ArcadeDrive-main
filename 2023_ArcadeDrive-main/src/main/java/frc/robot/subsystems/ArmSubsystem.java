@@ -21,18 +21,19 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
 
   private CANSparkMax m_Arm = new CANSparkMax(ArmConstants.kArmMotorPort, MotorType.kBrushless);
-  private CANSparkMax m_Grabber = new CANSparkMax(ArmConstants.kGrabberMotorPort, MotorType.kBrushless); 
+  //private CANSparkMax m_Grabber = new CANSparkMax(ArmConstants.kGrabberMotorPort, MotorType.kBrushless); 
 
   private SparkMaxPIDController m_pidControllerArm = m_Arm.getPIDController();  
-  private SparkMaxPIDController m_pidControllerGrabber = m_Grabber.getPIDController();  
+  //private SparkMaxPIDController m_pidControllerGrabber = m_Grabber.getPIDController();  
 
     // The left-side Primary drive encoder
     private  RelativeEncoder m_ArmEncoderP = m_Arm.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     // The right-side Primary drive encoder
-    private  RelativeEncoder m_GrabberEncoderP = m_Grabber.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    //private  RelativeEncoder m_GrabberEncoderP = m_Grabber.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
   public ArmSubsystem() {
-    m_Grabber.setInverted(true);
+    //m_Grabber.setInverted(true);
+   // m_Arm.setOpenLoopRampRate(2);
   }
 
   public double getPosition() {
@@ -46,7 +47,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void setSpeed(double speed) {
     m_Arm.set(speed);
   }
-
+/*
   public void grabberSetspeed(double speed) {
     m_Grabber.set(speed);
   }
@@ -62,7 +63,7 @@ public class ArmSubsystem extends SubsystemBase {
   public double getGrabberCurrent() {
     return m_Grabber.getOutputCurrent();
   }
-
+*/
 
   @Override
   public void periodic() {

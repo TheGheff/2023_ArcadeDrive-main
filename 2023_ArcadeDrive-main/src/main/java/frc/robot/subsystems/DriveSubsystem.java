@@ -81,6 +81,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     //m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     //m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    //m_RightPrimary.setOpenLoopRampRate(2);
+    //m_RightSecondary.setOpenLoopRampRate(2);
+    //m_LeftPrimary.setOpenLoopRampRate(2);
+    //m_LeftSecondary.setOpenLoopRampRate(2);
+    
   }
 
   /**
@@ -97,6 +102,13 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetEncoders() {
     m_leftEncoderP.setPosition(0);
     m_rightEncoderP.setPosition(0);
+    m_leftEncoderS.setPosition(0);
+    m_rightEncoderS.setPosition(0);
+    m_leftEncoderP.setPositionConversionFactor(1);
+    m_rightEncoderP.setPositionConversionFactor(1);
+    m_leftEncoderS.setPositionConversionFactor(1);
+    m_rightEncoderS.setPositionConversionFactor(1);
+    
   }
 
   /**
@@ -105,9 +117,13 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return ((m_leftEncoderP.getPosition()*DriveConstants.kGeaeboxRatio) + (m_rightEncoderP.getPosition()*DriveConstants.kGeaeboxRatio)) / 2.0;
+    return (((m_leftEncoderP.getPosition()/DriveConstants.kGeaeboxRatio)*(DriveConstants.kWheelDiameterInches * Math.PI))+(m_rightEncoderP.getPosition()/DriveConstants.kGeaeboxRatio)*(DriveConstants.kWheelDiameterInches * Math.PI))/2;//*(DriveConstants.kWheelDiameterInches * Math.PI)) + (m_rightEncoderP.getPosition()*DriveConstants.kGeaeboxRatio)*(DriveConstants.kWheelDiameterInches * Math.PI)) / 2.0; //*DriveConstants.kGeaeboxRatio
   }
 
+
+  //m_leftEncoderP.getPosition()+m_rightEncoderP.getPosition();//
+
+  
   /**
    * Gets the left drive encoder.
    *

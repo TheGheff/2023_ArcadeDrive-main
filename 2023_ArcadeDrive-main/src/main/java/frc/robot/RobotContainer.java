@@ -16,8 +16,9 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.TurnToAngleProfiled;
 import frc.robot.commands.MoveArm;
-import frc.robot.commands.CloseGrabber;
-import frc.robot.commands.OpenGrabber;
+//import frc.robot.commands.CloseGrabber;
+import frc.robot.commands.DriveDistanceCommand;
+//import frc.robot.commands.OpenGrabber;
 
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
@@ -45,6 +46,12 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
+    private final Command driveBack =
+        new DriveDistanceCommand(4, m_robotDrive, -.5);
+    private final Command driveForward =
+        new DriveDistanceCommand(48, m_robotDrive, .5);
+
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -80,12 +87,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_robotDrive.setMaxOutput(0.125); //totally inthe wrong place #fix
+    //m_robotDrive.setMaxOutput(0.125); //totally inthe wrong place #fix
 
     // Drive at half speed when the right bumper is held
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-        .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.125)))//.25
-        .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.25)));  //1
+        .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.25)))//.25
+        .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(01)));  //1
 
 //Does not work        
     // Stabilize robot to drive straight with gyro when left bumper is held
@@ -124,18 +131,18 @@ public class RobotContainer {
     .onTrue( new InstantCommand(() ->m_Arm.setSpeed(-.5)))
     .onFalse( new InstantCommand(() ->m_Arm.setSpeed(0)));
 
-
+/*
  // Grabber Open
     new JoystickButton(m_operatorController, Button.kX.value)
-    .onTrue( new CloseGrabber(m_Arm))//new InstantCommand(() ->m_Arm.grabberClose(-.5)))
+    .onTrue( new InstantCommand(() ->m_Arm.grabberClose(-.5)))//new CloseGrabber(m_Arm))//
     .onFalse( new InstantCommand(() ->m_Arm.grabberClose(0)));
 
 
  // Grabber Close
     new JoystickButton(m_operatorController, Button.kY.value) 
-    .onTrue( new OpenGrabber(m_Arm))//new InstantCommand(() ->m_Arm.grabberOpen(.5)))
+    .onTrue( new InstantCommand(() ->m_Arm.grabberOpen(.5)))//new OpenGrabber(m_Arm))//
     .onFalse( new InstantCommand(() ->m_Arm.grabberOpen(0)));
-        
+      */  
         
 
     //this is a BAD hack #fix
@@ -199,6 +206,11 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // no auto
 
-    return new InstantCommand();
+    //new DriveDistanceCommand(4, m_robotDrive, -.5);
+    //new DriveDistanceCommand(48, m_robotDrive, .5);
+    
+    return driveForward;//new InstantCommand();//
+  
+    
   }
 }
